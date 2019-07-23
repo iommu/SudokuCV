@@ -1,13 +1,15 @@
 import cv2, imutils
 import numpy as np
 
+#puzzle = [[0 for col in range(9)] for row in range(9)]
+
 img = cv2.imread('test.jpg')
 image = imutils.resize(img, width=1000)
 
 img = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
 ret, thresh = cv2.threshold(img, 127,255,cv2.THRESH_BINARY_INV)
-_, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+contours, hierarchy = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
 large = 0
 index = 0
@@ -29,6 +31,6 @@ if len(contours):
     approx[np.argmax(summ)],
     approx[np.argmin(diff)]])
     M = cv2.getPerspectiveTransform(approx,outputPoints)
-    image = cv2.warpPerspective(image, M, (270,270))
-    cv2.imshow('output', image)
+    image = cv2.warpPerspective(img, M, (270,270))
+    cv2.imshow("s",image)
     cv2.waitKey(0)
